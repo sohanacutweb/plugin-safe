@@ -6,17 +6,23 @@ Version: 1.0.0
 Author: Acutweb
 Author URI: http://acutweb.com
 */
-//https://stackoverflow.com/questions/10735766/block-all-bots-crawlers-spiders-for-a-special-directory-with-htaccess
+
 if(!defined('ABSPATH'))
 {
 	exit;
 }
-
-$wpsecurepluginpath = WP_CONTENT_URL.'/plugins/'.plugin_basename(dirname(__FILE__)).'/';
+if (!defined('FMO_PLUGIN_URL')) {
+    define('WPCSB_PLUGIN_URL', plugin_dir_path( __FILE__ ));
+}
 
 $siteUrl = $_SERVER['HTTP_HOST'];
 
 $siteUrl = str_replace('http://','',$siteUrl);
+
+register_deactivation_hook( __FILE__, 'wp_csb_deactivation' );
+
+include("include/deactivation.php");
+
 
 add_option('wpcsb_tre', false);
 
@@ -27,7 +33,7 @@ $wpcsb_tre = get_option('wpcsb_tre');
  * the i18n subfolder of the Sociable directory
  **/
 function wpsecure_init_locale(){
-	global $wpsecurepluginpath;
+	$WPCSB_PLUGIN_URL;
 	load_plugin_textdomain('wp-csb-directory', false, 'i18n');
 }
 add_filter('init', 'wpsecure_init_locale');
@@ -36,21 +42,24 @@ add_filter('init', 'wpsecure_init_locale');
  * Add the WpSecure menu to the Settings menu
  */
 function wpsecure_admin_menu() {
-	add_options_page('WP Content Search Block', 'WP Content Search Block', 8, 'wp-csb-directory', 'wpsafe_submenu');
+	add_options_page('WP Content Search Block', 'WP Content Search Block', 8, 'wp-csb-directory', 'wpcsb_submenu');
 }
 add_action('admin_menu', 'wpsecure_admin_menu');
 
 function wpsecure_write_htaccess($tre){
 	global $siteUrl;
 	$filename = ABSPATH.'/wp-content/.htaccess';
+	/* 1. Disable Directory Browsing  - wpcsb */
 	
-	/* 1. Protect .htaccess From Outside Access - wpsecuno */
-
-	/* 3. Disable Directory Browsing  - wpsafe */
 	$ht3 = '# Disable directory browsing - wpcsb'."\r\n";
 	$ht3 .= 'RewriteEngine On'."\r\n";
 	$ht3 .= 'RewriteCond %{HTTP_USER_AGENT} (googlebot|bingbot) [NC]'."\r\n";
 	$ht3 .= 'RewriteRule .* - [R=403,L]'."\r\n";
+	$ht3 .= 'deny from all'."\r\n";
+	$ht3 .= 'Deny from all'."\r\n";
+	$ht3 .= '<Files ~ ".(xml|css|jpe?g|png|gif|js)$">'."\r\n";
+	$ht3 .= 'Allow from all'."\r\n";
+	$ht3 .= ' </Files>'."\r\n";
 	
 	$wpsecure_msg = '';
 	if (file_exists($filename)) {
@@ -62,26 +71,24 @@ function wpsecure_write_htaccess($tre){
 			}
 
 			$fp = fopen($filename, 'a');
-			//fwrite($fp, "# BEGIN Safe directory\r\n");
 			
 			if ($tre) fwrite($fp, $ht3."\r\n");
-			//fwrite($fp, "# END Safe directory\r\n");
+			
 			fclose($fp);
-			//$wpsecure_msg = "The file $filename modified correctly";
 		} else { $wpsecure_msg = "The file $filename is not writable"; }
-	} else { 
+	} else {
+		
 		// This is the case where file doesn't exist
+		
 		$fp = fopen($filename, 'w');
-
 		if ($tre) fwrite($fp, $ht3."\r\n");
-
 		fclose($fp);
 	}
 	return $wpsecure_msg;
 }
 
-function wpsafe_submenu() {
-	global $wpsecurepluginpath;
+function wpcsb_submenu() {
+	global $WPCSB_PLUGIN_URL;
 		$msg = "";
 		// Check form submission and update options
 		if ('wpsecure_submit' == $_POST['wpsecure_submit']) {
@@ -138,7 +145,7 @@ if ($msg) {
 				</div>
 			</div>
 		</div>
-</div> 
+</div>
 </div>
 <?php
 	}
