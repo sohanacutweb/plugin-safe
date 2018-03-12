@@ -11,16 +11,24 @@ if(!defined('ABSPATH'))
 {
 	exit;
 }
-if (!defined('FMO_PLUGIN_URL')) {
-    define('WPCSB_PLUGIN_URL', plugin_dir_path( __FILE__ ));
-}
+
+define('LICENSE_SECRET_KEY', '5aa64b2f18b502.71166222'); 
+// This is the URL where API query request will be sent to. This should be the URL of the site where you have installed the main license manager plugin. Get this value from the integration help page.
+/** Must add '/' end of url like: http://theprotectorplugin.com/ 
+*/
+define('LICENSE_SERVER_URL', 'http://localhost/wordpress/');
+define('YOUR_ITEM_REFERENCE', 'Plugin Safe');
 
 $siteUrl = $_SERVER['HTTP_HOST'];
 
 $siteUrl = str_replace('http://','',$siteUrl);
+if (!defined('WPCSB_PLUGIN_URL')) {
+    define('WPCSB_PLUGIN_URL', plugin_dir_path( __FILE__ ));
+}
+
+define( 'WPCSB_BASENAME', plugin_basename( __FILE__ ) );
 
 register_deactivation_hook( __FILE__, 'wp_csb_deactivation' );
-
 include("include/deactivation.php");
 
 
@@ -43,6 +51,8 @@ add_filter('init', 'wpsecure_init_locale');
  */
 function wpsecure_admin_menu() {
 	add_options_page('WP Content Search Block', 'WP Content Search Block', 8, 'wp-csb-directory', 'wpcsb_submenu');
+	
+	 //add_menu_page( 'WP Content Search Block', 'WP Content Search Block', 'manage_options', 'wp-csb-directory', 'wpcsb_submenu'); 
 }
 add_action('admin_menu', 'wpsecure_admin_menu');
 
@@ -88,63 +98,6 @@ function wpsecure_write_htaccess($tre){
 }
 
 function wpcsb_submenu() {
-	global $WPCSB_PLUGIN_URL;
-		$msg = "";
-		// Check form submission and update options
-		if ('wpsecure_submit' == $_POST['wpsecure_submit']) {
-
-			update_option('wpcsb_tre', $_POST['wpcsb_tre']);
-			
-			$wpcsb_tre = get_option('wpcsb_tre');
-			
-			$msg = wpsecure_write_htaccess($wpcsb_tre);
-		}
-	$wpcsb_tre = get_option('wpcsb_tre');	
-?>
-<div class="wrap" id="sm_div">
-    <h2>WP Content disable directory from search engine bot</h2>
-<?php
-if ($msg) {
-	?>
-	<div id="message" class="error"><p><strong><?php echo $msg; ?></strong></p>
-	</div>
-<?php
-	}	
-?>
-    <div style="clear:both";></div> 
-</div>
-
-<div id="poststuff" class="metabox-holder has-right-sidebar"> 
-
-<div class="has-sidebar sm-padded" > 
-					
-		<div id="post-body-content" class="has-sidebar-content"> 
-
-		<div class="meta-box-sortabless"> 
-										
-		<div id="sm_rebuild" class="postbox">
-			<h3 class="hndle">
-				<span>Safely disable directory browsing</span>
-			</h3>
-			<div class="inside">
-					<form name="form1" method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>&amp;updated=true">
-						<input type="hidden" name="wpsecure_submit" value="wpsecure_submit" />
-						<ul>
-							<li>
-							<label for="wpcsb_tre">
-								<input name="wpcsb_tre" type="checkbox" id="wpcsb_tre" value="1" <?php echo $wpcsb_tre?'checked="checked"':''; ?> />
-								Disable Directory Browsing of the directory: wp-content/ (Recommended)
-							</label>
-							</li>
-						</ul>
-					   <p class="submit"> <input type="submit" value="Save &amp; Write" class="sm_button"/></p>
-					</form>
-					</div>
-				</div>
-			</div>
-		</div>
-</div>
-</div>
-<?php
+	include("include/common_function.php");
 	}
 ?>
