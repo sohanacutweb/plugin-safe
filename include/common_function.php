@@ -108,4 +108,60 @@ function remove_plugin_feature(){
 	$filename = ABSPATH.'/wp-content/.htaccess';
 	unlink($filename);
 }
+
+/**
+ *Cronjob Register
+ *	date: 16_03_2018
+ * @added by : Acutweb
+ */
+
+add_action( 'licensecronjob', 'delete_all_post_revisions' );
+
+// This function will run once the 'licensecronjob' is called
+function delete_all_post_revisions() {
+	// OUR CODE will here
+	// Run CURL for Update Status
+	$LiceseoptionValue = get_option('plugin_safe_license_key');
+	// Check License Key Status
+	if(isset($LiceseoptionValue) and !empty($LiceseoptionValue)){
+		$apiurl = LICENSE_SERVER_URL;
+		$fields = array(
+		'slm_action' => 'slm_check',
+		'secret_key' => LICENSE_SECRET_KEY,
+		'registered_domain' => $_SERVER['SERVER_NAME'],
+		'license_key' => $LiceseoptionValue,
+		);
+		foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+		rtrim($fields_string, '&');
+			$ch = curl_init();
+			//set the url, number of POST vars, POST data
+			curl_setopt($ch,CURLOPT_URL, $apiurl);
+			curl_setopt($ch,CURLOPT_POST, count($fields));
+			curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			//execute post
+			$result = curl_exec($ch);
+			
+			//close connection
+			curl_close($ch);
+			$arrayData12 = json_decode($result);
+			if( ($arrayData12->status=='active') and ($arrayData12->domainstatus=='active')){
+				update_option('ps_license_key_status','active');
+			} else{
+				update_option('ps_license_key_status','inactive');
+			}
+		} else{
+			update_option('ps_license_key_status','notactive');
+		}
+}
+
+add_action( 'init', 'register_daily_revision_delete_event');
+function register_daily_revision_delete_event() {
+	// Make sure this event hasn't been scheduled
+	if( !wp_next_scheduled( 'licensecronjob' ) ) {
+		// Schedule the event
+		wp_schedule_event( time(), 'hourly', 'licensecronjob' );
+	} 
+}
+
 ?>
