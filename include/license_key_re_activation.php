@@ -46,8 +46,8 @@
 			
             echo '<div style="width:100%;color:green;">The following message was returned from the server: '.$license_data->message.'</div>';
             //Save the license key in the options table
-            update_option('sample_license_key', $license_key); 
-			update_option('pbn_license_key_status','active');
+            update_option('plugin_safe_license_key', $license_key); 
+			update_option('ps_license_key_status','active');
         }
         else{
 			
