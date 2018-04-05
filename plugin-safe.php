@@ -173,6 +173,4 @@ function plugin_api_call($def, $action, $args) {
 	}
 	return $res;
 }
-
-// End Plugin Update Checker
 ?>
