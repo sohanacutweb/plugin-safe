@@ -10,7 +10,7 @@ echo '<div class="wrap">';
         // API query parameters
         $api_params = array(
             'slm_action' => 'slm_activate',
-            'secret_key' => LICENSE_SECRET_KEY,
+            'secret_key' => LICENSE_SECRET_KEY_SAFE,
             'license_key' => $license_key,
             'registered_domain' => $_SERVER['SERVER_NAME'],
             'item_reference' => urlencode(YOUR_ITEM_PLUGIN_REFERENCE),
@@ -56,7 +56,7 @@ echo '<div class="wrap">';
         // API query parameters
         $api_params = array(
             'slm_action' => 'slm_deactivate',
-            'secret_key' => LICENSE_SECRET_KEY,
+            'secret_key' => LICENSE_SECRET_KEY_SAFE,
             'license_key' => $license_key,
             'registered_domain' => $_SERVER['SERVER_NAME'],
             'item_reference' => urlencode(YOUR_ITEM_PLUGIN_REFERENCE),
