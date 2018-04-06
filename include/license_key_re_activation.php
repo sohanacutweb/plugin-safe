@@ -10,7 +10,7 @@
 
             'slm_action' => 'slm_activate',
 
-            'secret_key' => LICENSE_SECRET_KEY,
+            'secret_key' => LICENSE_SECRET_KEY_SAFE,
 
             'license_key' => $license_key,
 
@@ -79,7 +79,7 @@
 
             'slm_action' => 'slm_deactivate',
 
-            'secret_key' => LICENSE_SECRET_KEY,
+            'secret_key' => LICENSE_SECRET_KEY_SAFE,
 
             'license_key' => $license_key,
 
