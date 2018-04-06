@@ -16,8 +16,8 @@ define('LICENSE_SECRET_KEY', '5aa64b2f18b502.71166222');
 // This is the URL where API query request will be sent to. This should be the URL of the site where you have installed the main license manager plugin. Get this value from the integration help page.
 /** Must add '/' end of url like: http://theprotectorplugin.com/ 
 */
-define('LICENSE_SERVER_URL', 'http://localhost/wordpress/');
-define('YOUR_ITEM_REFERENCE', 'Plugin Safe');
+define('LICENSE_PLUGIN_SERVER_URL', 'http://localhost/wordpress/');
+define('YOUR_ITEM_PLUGIN_REFERENCE', 'Plugin Safe');
 
 $siteUrl = $_SERVER['HTTP_HOST'];
 
