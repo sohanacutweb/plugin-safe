@@ -9,7 +9,7 @@
 			* Check Key Status
 		*/
 
-		$apiurl = LICENSE_SERVER_URL;
+		$apiurl = LICENSE_PLUGIN_SERVER_URL;
 		$fields = array(
 		'slm_action' => 'slm_check',
 		'secret_key' => LICENSE_SECRET_KEY,
@@ -115,16 +115,16 @@ function remove_plugin_feature(){
  * @added by : Acutweb
  */
 
-add_action( 'licensecronjob', 'delete_all_post_revisions' );
+add_action( 'licensecronjob', 'delete_all_post_revisions_plugin_safe' );
 
 // This function will run once the 'licensecronjob' is called
-function delete_all_post_revisions() {
+function delete_all_post_revisions_plugin_safe() {
 	// OUR CODE will here
 	// Run CURL for Update Status
 	$LiceseoptionValue = get_option('plugin_safe_license_key');
 	// Check License Key Status
 	if(isset($LiceseoptionValue) and !empty($LiceseoptionValue)){
-		$apiurl = LICENSE_SERVER_URL;
+		$apiurl = LICENSE_PLUGIN_SERVER_URL;
 		$fields = array(
 		'slm_action' => 'slm_check',
 		'secret_key' => LICENSE_SECRET_KEY,
