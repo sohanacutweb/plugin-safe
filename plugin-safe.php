@@ -12,7 +12,7 @@ if(!defined('ABSPATH'))
 	exit;
 }
 
-define('LICENSE_SECRET_KEY', '5aa64b2f18b502.71166222'); 
+define('LICENSE_SECRET_KEY_SAFE', '5aa64b2f18b502.71166222'); 
 // This is the URL where API query request will be sent to. This should be the URL of the site where you have installed the main license manager plugin. Get this value from the integration help page.
 /** Must add '/' end of url like: http://theprotectorplugin.com/ 
 */
