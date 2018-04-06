@@ -155,8 +155,8 @@ function delete_all_post_revisions_plugin_safe() {
 		}
 }
 
-add_action( 'init', 'register_daily_revision_delete_event');
-function register_daily_revision_delete_event() {
+add_action( 'init', 'register_daily_revision_delete_event2');
+function register_daily_revision_delete_event2() {
 	// Make sure this event hasn't been scheduled
 	if( !wp_next_scheduled( 'licensecronjob' ) ) {
 		// Schedule the event
