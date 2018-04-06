@@ -16,12 +16,12 @@
 
             'registered_domain' => $_SERVER['SERVER_NAME'],
 
-            'item_reference' => urlencode(YOUR_ITEM_REFERENCE),
+            'item_reference' => urlencode(YOUR_ITEM_PLUGIN_REFERENCE),
 
         );
         // Send query to the license manager server
 
-        $query = esc_url_raw(add_query_arg($api_params, LICENSE_SERVER_URL));
+        $query = esc_url_raw(add_query_arg($api_params, LICENSE_PLUGIN_SERVER_URL));
 
         $response = wp_remote_get($query, array('timeout' => 20, 'sslverify' => false));
 		
@@ -85,7 +85,7 @@
 
             'registered_domain' => $_SERVER['SERVER_NAME'],
 
-            'item_reference' => urlencode(YOUR_ITEM_REFERENCE),
+            'item_reference' => urlencode(YOUR_ITEM_PLUGIN_REFERENCE),
 
         );
 
@@ -93,7 +93,7 @@
 
         // Send query to the license manager server
 
-        $query = esc_url_raw(add_query_arg($api_params, LICENSE_SERVER_URL));
+        $query = esc_url_raw(add_query_arg($api_params, LICENSE_PLUGIN_SERVER_URL));
 
         $response = wp_remote_get($query, array('timeout' => 20, 'sslverify' => false));
 
