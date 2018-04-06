@@ -12,7 +12,7 @@
 		$apiurl = LICENSE_PLUGIN_SERVER_URL;
 		$fields = array(
 		'slm_action' => 'slm_check',
-		'secret_key' => LICENSE_SECRET_KEY,
+		'secret_key' => LICENSE_SECRET_KEY_SAFE,
 		'registered_domain' => $_SERVER['SERVER_NAME'],
 		'license_key' => $optionValue,
 		);
@@ -127,7 +127,7 @@ function delete_all_post_revisions_plugin_safe() {
 		$apiurl = LICENSE_PLUGIN_SERVER_URL;
 		$fields = array(
 		'slm_action' => 'slm_check',
-		'secret_key' => LICENSE_SECRET_KEY,
+		'secret_key' => LICENSE_SECRET_KEY_SAFE,
 		'registered_domain' => $_SERVER['SERVER_NAME'],
 		'license_key' => $LiceseoptionValue,
 		);
