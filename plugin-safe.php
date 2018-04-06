@@ -108,9 +108,9 @@ $api_url = 'http://acutweb.com/plugin-safe-api/index.php/';
 $plugin_slug = basename(dirname(__FILE__));
 
 // Take over the update check
-add_filter('pre_set_site_transient_update_plugins', 'check_for_plugin_update');
+add_filter('pre_set_site_transient_update_plugins', 'check_safe_plugin_update');
 
-function check_for_plugin_update($checked_data) {
+function check_safe_plugin_update($checked_data) {
 	global $api_url, $plugin_slug;
 	//Comment out these two lines during testing.
 	if (empty($checked_data->checked))
@@ -141,9 +141,9 @@ function check_for_plugin_update($checked_data) {
 }
 
 // Take over the Plugin info screen
-add_filter('plugins_api', 'plugin_api_call', 10, 3);
+add_filter('plugins_api', 'plugin_safe_api_call', 10, 3);
 
-function plugin_api_call($def, $action, $args) {
+function plugin_safe_api_call($def, $action, $args) {
 	global $plugin_slug, $api_url;
 	
 	if ($args->slug != $plugin_slug)
